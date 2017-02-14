@@ -1,1 +1,1 @@
-web: go install main.go
+web: main
