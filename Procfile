@@ -1,1 +1,1 @@
-web: go-kalpas
+web: go install main.go
