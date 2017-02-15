@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 )
 
 func determineListenAddress() (string, error) {
@@ -16,8 +18,14 @@ func determineListenAddress() (string, error) {
 func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome, %s!", r.URL.Path[1:])
 }
-
 func main() {
+	addr, err := determineListenAddress()
+	if err != nil {
+		log.Fatal(err)
+	}
 	http.HandleFunc("/", handler)
-	http.ListenAndServe(determineListenAddress(), nil)
+	log.Printf("Listening on %s...\n", addr)
+	if err := http.ListenAndServe(addr, nil); err != nil {
+		panic(err)
+	}
 }
