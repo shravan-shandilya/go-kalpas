@@ -23,6 +23,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fs := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
 	http.HandleFunc("/", handler)
 	log.Printf("Listening on %s...\n", addr)
 	if err := http.ListenAndServe(addr, nil); err != nil {
