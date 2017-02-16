@@ -6,9 +6,20 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sql/database"
 	"strconv"
 	"strings"
 )
+
+type User struct {
+	id     int
+	name   string
+	mail   string
+	phone  string
+	token  string
+	otp    string
+	access boolean
+}
 
 func signin_handler(w http.ResponseWriter, request []string) error {
 	fmt.Fprintf(w, "Inside Signin handler")
@@ -40,7 +51,22 @@ func api_handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func database_init() {
+	//Connect to Database server
+	db, err := sql.open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		panic(err)
+	}
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("Connection established with Database Server")
 
+	//Check for Database
+	users, err := db.Query("select * from Users")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func register_apis() {
