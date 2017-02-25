@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/lib/pq"
+	_ "github.com/lib/pq"
 	"log"
 	"net/http"
 	"os"
@@ -11,6 +11,7 @@ import (
 	"strings"
 )
 
+/*
 type User struct {
 	id     int
 	name   string
@@ -18,8 +19,9 @@ type User struct {
 	phone  string
 	token  string
 	otp    string
-	access boolean
+	access bool
 }
+*/
 
 func signin_handler(w http.ResponseWriter, request []string) error {
 	fmt.Fprintf(w, "Inside Signin handler")
@@ -52,7 +54,7 @@ func api_handler(w http.ResponseWriter, r *http.Request) {
 
 func database_init() {
 	//Connect to Database server
-	db, err := sql.open("postgres", os.Getenv("DATABASE_URL"))
+	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -63,10 +65,10 @@ func database_init() {
 	log.Printf("Connection established with Database Server")
 
 	//Check for Database
-	users, err := db.Query("select * from Users")
-	if err != nil {
-		panic(err)
-	}
+	//users, err := db.Query("select * from Users")
+	//if err != nil {
+	//	panic(err)
+	//}
 }
 
 func register_apis() {
